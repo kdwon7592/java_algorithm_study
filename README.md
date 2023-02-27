@@ -1,2 +1,6 @@
-# java_algorithm_study
-# java_algorithm_study
+# 자바로 알고리즘 공부하기
+
+### 백준, 프로그래머스, LeetCode 문제를 풀면서 이력을 저장하고자 합니다.
+
+
+
