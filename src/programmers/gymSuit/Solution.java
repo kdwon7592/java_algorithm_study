@@ -1,46 +1,44 @@
-package programmers.모의고사;
+package programmers.gymSuit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class Solution {
-    public int[] solution(int[] answers) {
-        int[] one = new int[] {1,2,3,4,5};
-        int[] two = new int[] {2,1,2,3,2,4,2,5};
-        int[] three = new int[] {3,3,1,1,2,2,4,4,5,5};
+    public static void main(String[] args) {
+//        13, [1, 2, 5, 6, 10, 12, 13], [2, 3, 4, 5, 7, 8, 9, 10, 11, 12]
+        solution(13, new int[] {1, 2, 5, 6, 10, 12, 13}, new int[] {2, 3, 4, 5, 7, 8, 9, 10, 11, 12});
+    }
+    //n: 학생수 , lost: 체육복 잃어버린 학생, reserve: 여분있는 학생
+    public static int solution(int n, int[] lost, int[] reserve) {
+        Arrays.sort(reserve);
 
-        int oneAnswer = 0;
-        int twoAnswer = 0;
-        int threeAnswer = 0;
+        List<Integer> newLost = new ArrayList<>(Arrays.asList(Arrays.stream(lost).boxed().toArray(Integer[]::new)));
 
-        for(int i = 0; i < answers.length; i++) {
-            if(answers[i] == one[(one.length + i) % 5]) {
-                oneAnswer++;
-            }
-
-            if(answers[i] == two[(two.length + i) % 8]) {
-                twoAnswer++;
-            }
-
-            if(answers[i] == three[(three.length + i) % 10]) {
-                threeAnswer++;
+        // 자신의 번호는 미리 없애야함
+        for(int i = 0; i < reserve.length && newLost.size() > 0; i++) {
+            // 자신의 번호 확인
+            if (newLost.contains(reserve[i])) {
+                newLost.remove(newLost.indexOf(reserve[i]));
+                reserve[i] = -1;
+                continue;
             }
         }
 
-        int max = Math.max(Math.max(oneAnswer, twoAnswer), threeAnswer);
-        ArrayList<Integer> answer = new ArrayList<>();
-
-        if(max == oneAnswer) {
-            answer.add(1);
+        //앞번호 먼저 없는지 확인 후 뒷번호 (앞번호 먼저 주는 것이 효율적)
+        for(int i = 0; i < reserve.length && newLost.size() > 0; i++) {
+            // 앞번호 확인
+            if(newLost.contains(reserve[i]-1)) {
+                newLost.remove(newLost.indexOf(reserve[i]-1));
+                continue;
+            }
+            // 뒷번호 확인
+            if(newLost.contains(reserve[i]+1)) {
+                newLost.remove(newLost.indexOf(reserve[i]+1));
+                continue;
+            }
         }
 
-        if(max == twoAnswer) {
-            answer.add(2);
-        }
-
-        if(max == threeAnswer) {
-            answer.add(3);
-        }
-
-        return answer.stream().mapToInt(Integer::intValue).toArray();
+        return n - newLost.size();
     }
 }

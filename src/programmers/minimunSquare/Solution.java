@@ -1,22 +1,26 @@
-package programmers.numberOfK;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-//[1, 5, 2, 6, 3, 7, 4]	[[2, 5, 3], [4, 4, 1], [1, 7, 3]]	[5, 6, 3]
+package programmers.minimunSquare;
 
 class Solution {
-    public static void main(String[] args) {
-        solution(null, null);
-    }
-    public static int[] solution(int[] array, int[][] commands) {
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        for(int i = 0; i < commands.length; i++) {
-            int[] temp = Arrays.copyOfRange(array, commands[i][0]-1, commands[i][1]);
-            Arrays.sort(temp);
-            arrayList.add(temp[commands[i][2]-1]);
+    public int solution(int[][] sizes) {
+        int[] bigLens = new int[sizes.length];
+        int[] smallLens = new int[sizes.length];
+
+        int maxBig = 0;
+        int maxSmall = 0;
+
+        for(int i = 0; i < sizes.length; i++) {
+            if(sizes[i][0] > sizes[i][1]) {
+                bigLens[i] = sizes[i][0];
+                smallLens[i] = sizes[i][1];
+            } else {
+                bigLens[i] = sizes[i][1];
+                smallLens[i] = sizes[i][0];
+            }
+
+            maxBig = maxBig < bigLens[i] ? bigLens[i] : maxBig;
+            maxSmall = maxSmall < smallLens[i] ? smallLens[i] : maxSmall;
         }
 
-        return arrayList.stream().mapToInt(Integer::intValue).toArray();
+        return maxBig * maxSmall;
     }
 }
