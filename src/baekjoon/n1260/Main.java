@@ -57,7 +57,7 @@ public class Main {
         System.out.print(v + " ");
         //2 - 1, 5, 4, 3
         for(int i : nodes[v]) {
-            if(!DFSVisited[i]) {
+            if(!DFSVisited[i])  {
                 DFS(i);
             }
         }
